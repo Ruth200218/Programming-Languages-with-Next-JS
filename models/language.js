@@ -6,7 +6,7 @@ const languangeSchema = new Schema (
             type: String,
             required: [true, "El titulo es requerido"],
             match: [
-                /^[A-Za-zñÑ\s]*$/, 
+                /^[A-Za-zñÑáéíóúÁÉÍÓÚ]*$/, 
                 "Titulo Inválido"
             ],
         }, 
@@ -14,7 +14,7 @@ const languangeSchema = new Schema (
             type: String,
             required: [true, 'La descripción es requerida'],
             match: [
-                /^[A-Za-zñÑ\s]*$/, 
+                /^[A-Za-zñÑáéíóúÁÉÍÓÚ]*$/, 
                 "Descripción Inválida"
             ],
         },
