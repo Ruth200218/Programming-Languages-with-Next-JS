@@ -40,8 +40,19 @@ export async function POST(request){
                 password: hashedPassword,
             }
         );
-        
-        return NextResponse.json( user, { message: "Usuario Registrado" }, { status: 201 })
+
+        return NextResponse.json(
+            {
+                email: user.email,
+                password: user.password,
+            }, 
+            {   
+                message: "Usuario Registrado" 
+            }, 
+            { 
+                status: 201 
+            },
+        );
     } catch (error) {
         console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {

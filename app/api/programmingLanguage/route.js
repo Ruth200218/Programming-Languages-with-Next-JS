@@ -8,7 +8,18 @@ export async function POST(request) {
         await Language.create({title, description});
         return NextResponse.json({ message: "Lenguaje Creado" }, { status: 201 });
     } catch (error) {
-        console.log(error);
+                console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }
 
@@ -18,7 +29,18 @@ export async function GET() {
         const language = await Language.find();
         return NextResponse.json({ language });
     } catch (error) {
-        console.log(error);
+                console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }
 
@@ -29,7 +51,18 @@ export async function DELETE(request){
         await Language.findByIdAndDelete(id);
         return NextResponse.json({ message: "Lenguaje Eliminado" }, { status:200 });
     } catch (error) {
-        console.log(error);
+                console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 
 }

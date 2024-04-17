@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function AddLanguage() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [error, setError] = useState();
 
     const router = useRouter();
 
@@ -30,16 +31,23 @@ export default function AddLanguage() {
                 router.push("/");
                 router.refresh();
             } else {
-                throw new Error("error al guardar el nuevo lenguaje");
+                const errorData = await res.json();
+                if (errorData.error) {
+                    setError(errorData.erros);
+                } else {
+                    throw new Error("error al guardar el nuevo lenguaje");
+                }
             }
         } catch (error) {
             console.log(error);
+            setError(error.message);
         }
     }
 
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            {error && <div className="text-white rounded-lg bg-red-600 px-4 py-1 w-fit">{error}</div>}
             <input
                 onChange={(e) => setTitle(e.target.value)}
                 className="border border-slate-500 px-8 py-2"

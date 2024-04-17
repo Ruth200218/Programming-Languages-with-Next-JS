@@ -7,6 +7,7 @@ export default function EditLanguageForm({ id, title, description }) {
 
     const [newLanguage, setNewTitle] = useState(title);
     const [newDescription, setNewDescription] = useState(description);
+    const [error, setError] = useState();
 
     const router = useRouter();
 
@@ -31,16 +32,23 @@ export default function EditLanguageForm({ id, title, description }) {
                 router.push("/");
                 router.refresh();
             } else {
-                throw new Error("No se pudo actualizar el lenguaje");
+                const errorData = await res.json();
+                if (errorData.error) {
+                    setError(errorData.erros);
+                } else {
+                    throw new Error("No se pudo actualizar el lenguaje");
+                }
             }
 
         } catch (error) {
             console.log(error);
+            setError(error.message);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            {error && <div className="text-white rounded-lg bg-red-600 px-4 py-1 w-fit">{error}</div>}
             <input
                 onChange={(e) => setNewTitle(e.target.value)}
                 value={newLanguage}
