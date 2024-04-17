@@ -35,7 +35,7 @@ export default function register() {
                 });
 
                 if (res.ok) {
-                    router.push("/dashboard");
+                    router.push("/dashboard/profile");
                     router.refresh();
                 }
             } else {
@@ -47,7 +47,6 @@ export default function register() {
                 }
             }
         } catch (error) {
-            console.log(error);
             setError(error.message);
         }
     }
@@ -80,7 +79,7 @@ export default function register() {
                 required
                 onChange={(e) => setEmail(e.target.value)}
                 className="border border-slate-500 px-8 py-2"
-                type="text"
+                type="email"
                 placeholder="Ingrese su email"
                 name="email" />
 

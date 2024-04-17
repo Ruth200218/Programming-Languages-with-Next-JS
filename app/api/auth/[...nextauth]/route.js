@@ -49,6 +49,9 @@ export const authOption = NextAuth({
             }
             return session;
         }
+    },
+    pages: {
+        signIn: '/login',
     }
 });
 
