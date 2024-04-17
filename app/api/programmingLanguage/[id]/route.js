@@ -1,12 +1,11 @@
-import connectMongoDB from "@/libs/mongodb";
-import Language from "@/models/language";
+import DB from "@/services/database";
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
     try {        
         const { id } = params;
         const { newLanguage: title, newDescription: description } = await request.json();
-        await connectMongoDB();
+        const { Language } = await DB();
         await Language.findByIdAndUpdate(id, { title, description });
         return NextResponse.json({ message: "Lenguaje actualizado" }, { status: 200 })
     } catch (error) {
