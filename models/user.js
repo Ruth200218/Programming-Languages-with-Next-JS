@@ -7,7 +7,7 @@ const userSchema = new Schema(
             type: String,
             required: [true, "El nombre es requerido"],
             match: [
-                /^[A-Za-zñÑ\s]*$/, 
+                /^[A-Za-zñÑáéíóúÁÉÍÓÚ]*$/, 
                 "Nombre inválido"
             ],
         },
@@ -15,8 +15,8 @@ const userSchema = new Schema(
             type: String,
             required: [true, "El apellido es requerido"],
             match: [
-                /^[A-Za-zñÑ\s]*$/, 
-                "Apellido Inválida"
+                /^[A-Za-zñÑáéíóúÁÉÍÓÚ]*$/, 
+                "Apellido Inválido"
             ],
         },
         email: {

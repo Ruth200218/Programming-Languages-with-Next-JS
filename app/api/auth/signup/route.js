@@ -39,7 +39,7 @@ export async function POST(request){
             }
         );
         
-        return NextResponse.json( user ,{ message: "Usuario Registrado" }, { status: 201 })
+        return NextResponse.json( user, { message: "Usuario Registrado" }, { status: 201 })
     } catch (error) {
         console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {

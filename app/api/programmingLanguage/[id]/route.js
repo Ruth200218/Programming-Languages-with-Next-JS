@@ -16,7 +16,7 @@ export async function PUT(request, { params }) {
 export async function GET(request, { params }){
     try {
         const { id } = params;
-        await connectMongoDB();
+        const { Language } = await DB();
         const language = await Language.findOne({ _id: id });
         return NextResponse.json({ language }, { status: 200 });
     } catch (error) {
