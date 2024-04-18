@@ -1,5 +1,6 @@
 import DB from "@/services/database";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function PUT(request, { params }) {
     try {        
@@ -31,7 +32,7 @@ export async function GET(request, { params }){
         const language = await Language.findOne({ _id: id });
         return NextResponse.json({ language }, { status: 200 });
     } catch (error) {
-                console.log(error);
+        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
             return NextResponse.json(
                 {

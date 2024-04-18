@@ -19,7 +19,6 @@ export const authOption = NextAuth({
             }).select("+password");
 
             if (!userFound) throw new Error ("Los datos son incorrectos");
-            console.log(userFound);
 
             const passwordMatch = await bcrypt.compare(
                 credentials.password,
@@ -28,27 +27,22 @@ export const authOption = NextAuth({
 
             if (!passwordMatch) throw new Error ("La contraseña es inválida");
 
-            return { userFound, email: credentials.email };
+            const { first_name, last_name } = userFound;
+
+            return { ...userFound, email: credentials.email, first_name, last_name };
         }
         })
     ],
     callbacks: {
-        async jwt({ token, user }){
-            if (user) {
-                token.user = {
-                    email: user.email,
-                };
-            }
+        async jwt({ token, user }) {
+            if (user) token.user = user;
             return token;
         },
-        async session({ session, token, user }){
-            if (user){
-                session.user = {
-                    session: token.user, 
-                } 
-            }
-            return session;
-        }
+
+        async session({ session, token }) {
+        session.user = token.user;
+        return session;
+        },
     },
     pages: {
         signIn: '/login',

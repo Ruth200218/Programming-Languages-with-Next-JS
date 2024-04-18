@@ -1,5 +1,6 @@
 import DB from "@/services/database";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function POST(request) {
     try {        
@@ -8,7 +9,7 @@ export async function POST(request) {
         await Language.create({title, description});
         return NextResponse.json({ message: "Lenguaje Creado" }, { status: 201 });
     } catch (error) {
-                console.log(error);
+        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
             return NextResponse.json(
                 {
@@ -29,7 +30,7 @@ export async function GET() {
         const language = await Language.find();
         return NextResponse.json({ language });
     } catch (error) {
-                console.log(error);
+        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
             return NextResponse.json(
                 {
@@ -51,7 +52,7 @@ export async function DELETE(request){
         await Language.findByIdAndDelete(id);
         return NextResponse.json({ message: "Lenguaje Eliminado" }, { status:200 });
     } catch (error) {
-                console.log(error);
+        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
             return NextResponse.json(
                 {
