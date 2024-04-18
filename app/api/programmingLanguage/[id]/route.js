@@ -1,5 +1,6 @@
 import DB from "@/services/database";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function PUT(request, { params }) {
     try {        
@@ -9,7 +10,18 @@ export async function PUT(request, { params }) {
         await Language.findByIdAndUpdate(id, { title, description });
         return NextResponse.json({ message: "Lenguaje actualizado" }, { status: 200 })
     } catch (error) {
-        console.log(error);
+                console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }
 
@@ -21,5 +33,16 @@ export async function GET(request, { params }){
         return NextResponse.json({ language }, { status: 200 });
     } catch (error) {
         console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import mongoose from "mongoose";
 import { useRouter } from "next/navigation";
-import { NextResponse } from "next/server";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function register() {
 
@@ -19,7 +18,7 @@ export default function register() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:3000/api/auth/signup", {
+            const signUpResponse = await fetch("http://localhost:3000/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -27,11 +26,20 @@ export default function register() {
                 body: JSON.stringify({ first_name, last_name, email, password }),
             });
 
-            if (res.ok) {
-                router.push("/");
-                router.refresh();
+            if (signUpResponse.ok) {
+
+                const res = await signIn("credentials", {
+                    email: email,
+                    password: password,
+                    redirect: false,
+                });
+
+                if (res.ok) {
+                    router.push("/dashboard/profile");
+                    router.refresh();
+                }
             } else {
-                const errorData = await res.json();
+                const errorData = await signUpResponse.json();
                 if (errorData.errors) {
                     setError(errorData.errors);
                 } else {
@@ -39,7 +47,6 @@ export default function register() {
                 }
             }
         } catch (error) {
-            console.log(error);
             setError(error.message);
         }
     }
@@ -72,7 +79,7 @@ export default function register() {
                 required
                 onChange={(e) => setEmail(e.target.value)}
                 className="border border-slate-500 px-8 py-2"
-                type="text"
+                type="email"
                 placeholder="Ingrese su email"
                 name="email" />
 

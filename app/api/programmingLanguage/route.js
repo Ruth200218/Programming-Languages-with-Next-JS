@@ -1,5 +1,6 @@
 import DB from "@/services/database";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function POST(request) {
     try {        
@@ -9,6 +10,17 @@ export async function POST(request) {
         return NextResponse.json({ message: "Lenguaje Creado" }, { status: 201 });
     } catch (error) {
         console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }
 
@@ -19,6 +31,17 @@ export async function GET() {
         return NextResponse.json({ language });
     } catch (error) {
         console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 }
 
@@ -30,6 +53,17 @@ export async function DELETE(request){
         return NextResponse.json({ message: "Lenguaje Eliminado" }, { status:200 });
     } catch (error) {
         console.log(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            return NextResponse.json(
+                {
+                message: error.message,
+                },
+                {
+                status: 400,
+                }
+            );
+        }
+        return NextResponse.error();
     }
 
 }

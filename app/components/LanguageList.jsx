@@ -1,6 +1,7 @@
 import Link from "next/link";
 import DeleteBtn from "./DeleteBtn";
 import { HiPencilAlt } from 'react-icons/hi';
+import { getServerSession } from "next-auth";
 
 const getLanguage = async () => {
     try {
@@ -20,7 +21,7 @@ const getLanguage = async () => {
 
 export default async function LanguageList() {
     const { language } = await getLanguage();
-
+    const session = await getServerSession();
     return (
         <>
             {language?.map((l) => (
@@ -29,13 +30,17 @@ export default async function LanguageList() {
                         <h2 className="font-blod text-2xl">{l.title}</h2>
                         <p> {l.description} </p>
                     </div>
-
-                    <div className="flex gap-2">
-                        <DeleteBtn id={l._id} />
-                        <Link className="text-amber-200" href={`/editLanguage/${l._id}`}>
-                            <HiPencilAlt size={24} />
-                        </Link>
-                    </div>
+                    {session ? (
+                        <div className="flex gap-2">
+                            <DeleteBtn id={l._id} />
+                            <Link className="text-amber-200" href={`/editLanguage/${l._id}`}>
+                                <HiPencilAlt size={24} />
+                            </Link>
+                        </div>
+                    ) : (
+                        <>
+                        </>
+                    )}
                 </div>
             ))}
         </>
