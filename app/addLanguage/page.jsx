@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function AddLanguage() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState();
+    const { data: session } = useSession();
 
     const router = useRouter();
 
@@ -24,7 +26,7 @@ export default function AddLanguage() {
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify({ title, description }),
+                body: JSON.stringify({ title, description, user_id: session?.user?._doc?._id}),
             });
 
             if (res.ok) {
