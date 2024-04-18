@@ -1,7 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
+// user_id | tile | description | createdAt | updatedAt
+
 const languangeSchema = new Schema (
     {
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         title: {
             type: String,
             required: [true, "El titulo es requerido"],

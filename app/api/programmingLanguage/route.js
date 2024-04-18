@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 
 export async function POST(request) {
     try {        
-        const {title, description} = await request.json();
+        const {title, description, user_id} = await request.json();
         const { Language } = await DB();
-        await Language.create({title, description});
+        await Language.create({title, description, user_id });
         return NextResponse.json({ message: "Lenguaje Creado" }, { status: 201 });
     } catch (error) {
         console.log(error);
@@ -24,13 +24,13 @@ export async function POST(request) {
     }
 }
 
-export async function GET() {
-    try {        
+export async function GET(request) {
+    try {
         const { Language } = await DB();
-        const language = await Language.find();
+        const user_id = request.nextUrl.searchParams.get("user_id");
+        const language = await Language.find({ user_id });
         return NextResponse.json({ language });
     } catch (error) {
-        console.log(error);
         if (error instanceof mongoose.Error.ValidationError) {
             return NextResponse.json(
                 {

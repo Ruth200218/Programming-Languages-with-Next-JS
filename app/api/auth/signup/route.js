@@ -1,15 +1,13 @@
-import connectMongoDB from "@/libs/mongodb";
-import User from "@/models/user";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import DB from "@/services/database";
 
 
 export async function POST(request){
     try {
         const { first_name, last_name, email, password } = await request.json();
-        await connectMongoDB();
-        
+        const { User } = await DB();
         const emailFound = await User.findOne({email});
         if (emailFound) return NextResponse.json(
             {

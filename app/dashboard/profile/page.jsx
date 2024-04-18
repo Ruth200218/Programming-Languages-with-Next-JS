@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 
-export default function profilePage() {
+export default function ProfilePage() {
     const { data: session, status } = useSession();
 
     if (status === 'loading') {

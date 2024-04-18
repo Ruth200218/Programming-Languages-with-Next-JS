@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import DB from "@/services/database";
 import bcrypt from "bcryptjs";
 
-export const authOption = NextAuth({
+export const authOptions = {
     providers: [
         CredentialsProvider({
             name: 'credentials',
@@ -12,25 +12,25 @@ export const authOption = NextAuth({
                 password: {label: "Password", type:"password"}
             },
 
-        async authorize(credentials, req) {
-            const { User } =  await DB();
-            const userFound = await User.findOne({
-                email: credentials?.email,
-            }).select("+password");
+            async authorize(credentials, req) {
+                const { User } =  await DB();
+                const userFound = await User.findOne({
+                    email: credentials?.email,
+                }).select("+password");
 
-            if (!userFound) throw new Error ("Los datos son incorrectos");
+                if (!userFound) throw new Error ("Los datos son incorrectos");
 
-            const passwordMatch = await bcrypt.compare(
-                credentials.password,
-                userFound.password
-            );
+                const passwordMatch = await bcrypt.compare(
+                    credentials.password,
+                    userFound.password
+                );
 
-            if (!passwordMatch) throw new Error ("La contraseña es inválida");
+                if (!passwordMatch) throw new Error ("La contraseña es inválida");
 
-            const { first_name, last_name } = userFound;
+                const { first_name, last_name } = userFound;
 
-            return { ...userFound, email: credentials.email, first_name, last_name };
-        }
+                return { ...userFound, email: credentials.email, first_name, last_name };
+            }
         })
     ],
     callbacks: {
@@ -40,13 +40,15 @@ export const authOption = NextAuth({
         },
 
         async session({ session, token }) {
-        session.user = token.user;
-        return session;
+            session.user = token.user;
+            return session;
         },
     },
     pages: {
         signIn: '/login',
     }
-});
+};
 
-export { authOption as GET, authOption as POST };
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST };
