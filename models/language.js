@@ -1,7 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-// user_id | tile | description | createdAt | updatedAt
-
 const languangeSchema = new Schema (
     {
         user_id: {
@@ -20,10 +18,6 @@ const languangeSchema = new Schema (
         description:{
             type: String,
             required: [true, 'La descripción es requerida'],
-            match: [
-                /^[A-Za-zñÑáéíóúÁÉÍÓÚ]*$/, 
-                "Descripción Inválida"
-            ],
         },
     },
     {

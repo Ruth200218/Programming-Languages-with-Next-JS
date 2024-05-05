@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-
+import SignOutBtn from "./SignOutBtn";
 
 export default async function Navbar() {
     const session = await getServerSession();
@@ -11,7 +11,7 @@ export default async function Navbar() {
                 <>
                     <Link className="text-white rounded-lg bg-purple-950 p-2" href={"/addLanguage"}>Añade un nuevo Lenguaje</Link>
                     <Link className="text-white rounded-lg bg-purple-950 p-2" href={"/dashboard/profile"}>Perfil</Link>
-                    <Link className="text-white rounded-lg bg-purple-950 p-2" href={"http://localhost:3000/api/auth/signout"}>Cerrar Sesión</Link>
+                    <SignOutBtn />
                 </>
             ) : (
                 <>
